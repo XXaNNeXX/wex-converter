@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XML Converter</title>
+    <style>
+        #dropZone {
+            max-width: 100%;
+            height: 200px;
+            border: 5px dashed #ccc;
+            text-align: center;
+            padding: 20px;
+            cursor: pointer;
+        }
+
+        #dropZone:hover {
+            border: 5px dashed #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="dropZone">
+        Ziehe deine XML-Datei hierher
+    </div>
+    <div id="xmlData"></div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const xmlDataElement = document.getElementById('xmlData');
+
+        dropZone.addEventListener('dragover', function (event) {
+            event.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', function (event) {
+            event.preventDefault();
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', function (event) {
+            event.preventDefault();
+            dropZone.classList.remove('dragover');
+
+            const file = event.dataTransfer.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const xmlString = e.target.result;
+                    displayXMLData(xmlString);
+                };
+
+                reader.readAsText(file);
+            }
+        });
+
+        function displayXMLData(xmlString) {
+            xmlDataElement.textContent = xmlString;
+            var parser = new DOMParser();
+            var xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+
+            var purchaseOrder = xmlDoc.querySelector('PurchaseOrder');
+            var orderHeader = purchaseOrder.querySelector('OrderHeader');
+            var user = orderHeader.querySelector('User').textContent;
+            var sender = orderHeader.querySelector('Sender');
+            var customerId = sender.querySelector('CustomerId').textContent;
+            var datevNo = sender.querySelector('DatevNo').textContent;
+            var sortName = sender.querySelector('SortName').textContent
+            var senderNameAddress = sender.querySelector('NameAddress')
+            var senderName1 = senderNameAddress.querySelector('Name1').textContent
+            var senderName2 = senderNameAddress.querySelector('Name2').textContent
+            var senderStreet = senderNameAddress.querySelector('Street').textContent
+            var senderPostalCode = senderNameAddress.querySelector('PostalCodeCity').textContent
+            var senderCity = senderNameAddress.querySelector('City').textContent
+            var senderCountry = senderNameAddress.querySelector('Country').textContent
+            var senderFon = senderNameAddress.querySelector('ContactFon').textContent
+            var senderEmail = senderNameAddress.querySelector('ContactEmail').textContent
+            var senderFullName = senderNameAddress.querySelector('ContactFirstName').textContent + " " + senderNameAddress.querySelector('ContactSurName').textContent
+            var payment = orderHeader.querySelector('Payment')
+            var paymentCondition = payment.querySelector('PaymentCondition').textContent
+            var bankCode = payment.querySelector('BankCodeNumber').textContent
+            var bankAccount = payment.querySelector('BankAccount').textContent
+            var swift = payment.querySelector('SwiftCode').textContent
+            var iban = payment.querySelector('IbanCode').textContent
+            var currency = payment.querySelector('Currency').textContent
+            var delivery = orderHeader.querySelector('Delivery')
+            var terms = delivery.querySelector('TermsOfDelivery').textContent
+            var deliveryTime = delivery.querySelector('DeliveryTime').textContent
+            var shipment = delivery.querySelector('ModeOfShippment').textContent
+            var deliveryNeutral = delivery.querySelector('DeliveryNeutral').textContent
+            var deliveryNameAddress = delivery.querySelector('NameAddress')
+            var deliveryName1 = deliveryNameAddress.querySelector('Name1').textContent
+            var deliveryName2 = deliveryNameAddress.querySelector('Name2').textContent
+            var deliveryFullName = deliveryNameAddress.querySelector('ContactFirstName').textContent + " " + deliveryNameAddress.querySelector('ContactSurName').textContent
+            var deliveryStreet = deliveryNameAddress.querySelector('Street').textContent
+            var deliveryPostalCode = deliveryNameAddress.querySelector('PostalCodeCity').textContent
+            var deliveryCity = deliveryNameAddress.querySelector('City').textContent
+            var deliveryCountry = deliveryNameAddress.querySelector('Country').textContent
+            var deliveryFon = deliveryNameAddress.querySelector('ContactFon').textContent
+            var deliveryEmail = deliveryNameAddress.querySelector('ContactEmail').textContent
+            var contact = delivery.querySelector('Contact').textContent
+            var orderNo = orderHeader.querySelector('OrderNo').textContent
+            var orderDate = orderHeader.querySelector('OrderDate').textContent
+            var jobNo = orderHeader.querySelector('JobNo').textContent
+            var supplierInfo = orderHeader.querySelector('SupplierInformation').textContent
+            var orderId = orderHeader.querySelector('OrderId').textContent
+            var listOrderDetails = purchaseOrder.querySelector('ListOfOrderDetails')
+            var orderDetails = listOrderDetails.querySelector('OrderDetails')
+            var quantity = orderDetails.querySelector('Quantity').textContent
+            var articleNo = orderDetails.querySelector('ArticleNo1').textContent
+            var description1 = orderDetails.querySelector('Description1').textContent
+            //var description2 = orderDetails.querySelector('Description2').textContent
+            var descriptionText = orderDetails.querySelector('DescriptionText')
+            var descriptionP = descriptionText.querySelector('p').textContent
+            var descriptionText2 = orderDetails.querySelector('DescriptionText2')
+            var sellingprice = orderDetails.querySelector('SellingPrice').textContent
+            var buyingCurrency = orderDetails.querySelector('BuyingPriceCurrency').textContent
+            var buyingPrice = orderDetails.querySelector('BuyingPrice').textContent
+            var priceUnit = orderDetails.querySelector('PriceUnit').textContent
+            var discount = orderDetails.querySelector('Discount').textContent
+            var equatedQuantity = orderDetails.querySelector('EquatedQuantity1').textContent
+            var equatedSelling = orderDetails.querySelector('EquatedSellingPrice1').textContent
+            var equatedBuying = orderDetails.querySelector('EquatedBuyingPrice1').textContent
+            var tax = orderDetails.querySelector('TaxRate').textContent
+            var commission = orderDetails.querySelector('CommissionOfRepresent').textContent
+            var goodsGroup = orderDetails.querySelector('GoodsGroup').textContent
+            var deliveryDate = orderDetails.querySelector('DateOfDelivery').textContent
+            var discountable = orderDetails.querySelector('Discountable').textContent
+            var articleImage = orderDetails.querySelector('ArticleImageLink').textContent
+
+            
+            var newXmlDoc = document.implementation.createDocument(null, '', null);
+
+            var xmlDeclaration = xmlDoc.createProcessingInstruction('xml', 'version="1.0" encoding="ISO-8859-1"');
+            xmlDoc.appendChild(xmlDeclaration);
+
+            var comment1 = newXmlDoc.createComment('DH-dietronic-WEX-Werbemittel-Exchange-XML-File');
+            newXmlDoc.appendChild(comment1);
+
+            var comment2 = newXmlDoc.createComment('WEXVersion=008');
+            newXmlDoc.appendChild(comment2);
+
+            var newPurchaseOrder = newXmlDoc.createElement('PurchaseOrder');
+            newPurchaseOrder.setAttribute('XmlStandard', '1');
+            newPurchaseOrder.setAttribute('SystemId', 'CDH');
+            newXmlDoc.appendChild(newPurchaseOrder);
+
+            var newOrderHeader = newXmlDoc.createElement('OrderHeader');
+            newPurchaseOrder.appendChild(newOrderHeader);
+
+            var newUser = newXmlDoc.createElement('User');
+            newUser.textContent = user;
+            newOrderHeader.appendChild(newUser);
+
+            var newSender = newXmlDoc.createElement('Sender');
+            newOrderHeader.appendChild(newSender);
+
+            var newCustomerId = newXmlDoc.createElement('CustomerId');
+            newCustomerId.textContent = customerId;
+            newSender.appendChild(newCustomerId);
+
+            var newDatevNo = newXmlDoc.createElement('DatevNo');
+            newDatevNo.textContent = datevNo;
+            newSender.appendChild(newDatevNo);
+
+            var newSortName = newXmlDoc.createElement('SortName');
+            newSortName.textContent = sortName;
+            newSender.appendChild(newSortName);
+
+            var newSenderNameAddress = newXmlDoc.createElement('NameAddress');
+            newSender.appendChild(newSenderNameAddress);
+
+            var newSenderName1 = newXmlDoc.createElement('Name1');
+            newSenderName1.textContent = senderName1;
+            newSenderNameAddress.appendChild(newSenderName1);
+
+            var newSenderName2 = newXmlDoc.createElement('Name2');
+            newSenderName2.textContent = senderFullName;
+            newSenderNameAddress.appendChild(newSenderName2);
+
+            var newSenderStreet = newXmlDoc.createElement('Street');
+            newSenderStreet.textContent = senderStreet;
+            newSenderNameAddress.appendChild(newSenderStreet);
+
+            var newSenderPostCode = newXmlDoc.createElement('PostalCodeCity');
+            newSenderPostCode.textContent = senderPostalCode;
+            newSenderNameAddress.appendChild(newSenderPostCode);
+
+            var newSenderCity = newXmlDoc.createElement('City');
+            newSenderCity.textContent = senderCity;
+            newSenderNameAddress.appendChild(newSenderCity);
+
+            var newSenderCountry = newXmlDoc.createElement('Country');
+            newSenderCountry.textContent = senderCity;
+            newSenderNameAddress.appendChild(newSenderCountry);
+
+            var newFon = newXmlDoc.createElement('Fon');
+            newFon.textContent = senderFon;
+            newSenderNameAddress.appendChild(newFon);
+
+            var newEmail = newXmlDoc.createElement('Email');
+            newEmail.textContent = senderEmail;
+            newSenderNameAddress.appendChild(newEmail);
+
+            var newContactPerson = newXmlDoc.createElement('ContactPerson');
+            newContactPerson.textContent = senderFullName;
+            newSender.appendChild(newContactPerson);
+
+            var newPayment = newXmlDoc.createElement('Payment');
+            newOrderHeader.appendChild(newPayment);
+
+            var newPaymentCondition = newXmlDoc.createElement('PaymentCondition');
+            newPaymentCondition.textContent = paymentCondition;
+            newPayment.appendChild(newPaymentCondition);
+
+            var newBankCode = newXmlDoc.createElement('BankCodeNumber');
+            newBankCode.textContent = bankCode;
+            newPayment.appendChild(newBankCode);
+
+            var newBankAccount = newXmlDoc.createElement('BankAccount');
+            newBankAccount.textContent = bankAccount;
+            newPayment.appendChild(newBankAccount);
+
+            var newSwift = newXmlDoc.createElement('SwiftCode');
+            newSwift.textContent = swift;
+            newPayment.appendChild(newSwift);
+
+            var newIban = newXmlDoc.createElement('IbanCode');
+            newIban.textContent = iban;
+            newPayment.appendChild(newIban);
+
+            var newCurrency = newXmlDoc.createElement('Currency');
+            newCurrency.textContent = currency;
+            newPayment.appendChild(newCurrency);
+
+            var newDelivery = newXmlDoc.createElement('Delivery');
+            newOrderHeader.appendChild(newDelivery);
+
+            var newTerms = newXmlDoc.createElement('TermsOfDelivery');
+            newTerms.textContent = terms;
+            newDelivery.appendChild(newTerms);
+
+            var newDeliveryTime = newXmlDoc.createElement('DeliveryTime');
+            newDeliveryTime.textContent = deliveryTime;
+            newDelivery.appendChild(newDeliveryTime);
+
+            var newShipment = newXmlDoc.createElement('ModeOfShippment');
+            newShipment.textContent = shipment;
+            newDelivery.appendChild(newShipment);
+
+            var newDeliveryNeutral = newXmlDoc.createElement('DeliveryNeutral');
+            newDeliveryNeutral.textContent = deliveryNeutral;
+            newDelivery.appendChild(newDeliveryNeutral);
+
+            var newDeliveryNameAddress = newXmlDoc.createElement('NameAddress');
+            newDelivery.appendChild(newDeliveryNameAddress);
+
+            var newDeliveryName1 = newXmlDoc.createElement('Name1');
+            newDeliveryName1.textContent = deliveryName1;
+            newDeliveryNameAddress.appendChild(newDeliveryName1);
+
+            var newDeliveryName2 = newXmlDoc.createElement('Name2');
+            newDeliveryName2.textContent = deliveryFullName;
+            newDeliveryNameAddress.appendChild(newDeliveryName2);
+
+            var newDeliveryStreet = newXmlDoc.createElement('Street');
+            newDeliveryStreet.textContent = deliveryStreet;
+            newDeliveryNameAddress.appendChild(newDeliveryStreet);
+
+            var newDeliveryPostalCode = newXmlDoc.createElement('PostalCodeCity');
+            newDeliveryPostalCode.textContent = deliveryPostalCode;
+            newDeliveryNameAddress.appendChild(newDeliveryPostalCode);
+
+            var newDeliveryCity = newXmlDoc.createElement('City');
+            newDeliveryCity.textContent = deliveryCity;
+            newDeliveryNameAddress.appendChild(newDeliveryCity);
+
+            var newDeliveryCountry = newXmlDoc.createElement('Country');
+            newDeliveryCountry.textContent = deliveryCountry;
+            newDeliveryNameAddress.appendChild(newDeliveryCountry);
+
+            var newDeliveryFon = newXmlDoc.createElement('Fon');
+            newDeliveryFon.textContent = deliveryFon;
+            newDeliveryNameAddress.appendChild(newDeliveryFon);
+
+            var newDeliveryEmail = newXmlDoc.createElement('Email');
+            newDeliveryEmail.textContent = deliveryEmail;
+            newDeliveryNameAddress.appendChild(newDeliveryEmail);
+
+            var newContact = newXmlDoc.createElement('Contact');
+            newContact.textContent = contact;
+            newDelivery.appendChild(newContact);
+
+            var newOrderNo = newXmlDoc.createElement('OrderNo');
+            newOrderNo.textContent = orderNo;
+            newOrderHeader.appendChild(newOrderNo);
+
+            var newOrderDate = newXmlDoc.createElement('OrderDate');
+            newOrderDate.textContent = orderDate;
+            newOrderHeader.appendChild(newOrderDate);
+
+            var newJobNo = newXmlDoc.createElement('JobNo');
+            newJobNo.textContent = jobNo;
+            newOrderHeader.appendChild(newJobNo);
+
+            var newSupplierInfo = newXmlDoc.createElement('SupplierInformation');
+            newSupplierInfo.textContent = supplierInfo;
+            newOrderHeader.appendChild(newSupplierInfo);
+
+            var newOrderId = newXmlDoc.createElement('OrderId');
+            newOrderId.textContent = orderId;
+            newOrderHeader.appendChild(newOrderId);
+
+            var newListOfOrderDetails = newXmlDoc.createElement('ListOfOrderDetails');
+            newPurchaseOrder.appendChild(newListOfOrderDetails);
+
+            var newOrderDetails = newXmlDoc.createElement('OrderDetails');
+            newListOfOrderDetails.appendChild(newOrderDetails);
+
+            var newQuantity = newXmlDoc.createElement('Quantity');
+            newQuantity.textContent = quantity;
+            newOrderDetails.appendChild(newQuantity);
+
+            var newArticleNo = newXmlDoc.createElement('ArticleNo1');
+            newArticleNo.textContent = articleNo;
+            newOrderDetails.appendChild(newArticleNo);
+
+            var newDescription1 = newXmlDoc.createElement('Description1');
+            newDescription1.textContent = description1;
+            newOrderDetails.appendChild(newDescription1);
+
+            //var newDescription2 = newXmlDoc.createElement('Description2');
+            //newDescription2.textContent = description2;
+            //newOrderDetails.appendChild(newDescription2);
+
+            var newDescriptionText = newXmlDoc.createElement('DescriptionText');
+            newOrderDetails.appendChild(newDescriptionText);
+
+            var newDescriptionP = newXmlDoc.createElement('p');
+            newDescriptionP.textContent = descriptionP;
+            newDescriptionText.appendChild(newDescriptionP);
+
+            var newDescriptionText2 = newXmlDoc.createElement('DescriptionText2');
+            newDescriptionText2.textContent = descriptionText2;
+            newOrderDetails.appendChild(newDescriptionText2);
+
+            var newSellingPrice = newXmlDoc.createElement('SellingPrice');
+            newSellingPrice.textContent = sellingprice;
+            newOrderDetails.appendChild(newSellingPrice);
+
+            var newBuyingCurrency = newXmlDoc.createElement('BuyingPriceCurrency');
+            newBuyingCurrency.textContent = buyingCurrency;
+            newOrderDetails.appendChild(newBuyingCurrency);
+
+            var newBuyingPrice = newXmlDoc.createElement('BuyingPrice');
+            newBuyingPrice.textContent = buyingPrice;
+            newOrderDetails.appendChild(newBuyingPrice);
+
+            var newPriceUnit = newXmlDoc.createElement('PriceUnit');
+            newPriceUnit.textContent = priceUnit;
+            newOrderDetails.appendChild(newPriceUnit);
+
+            var newDiscount = newXmlDoc.createElement('Discount');
+            newDiscount.textContent = discount;
+            newOrderDetails.appendChild(newDiscount);
+
+            var newEquatedQuantity = newXmlDoc.createElement('EquatedQuantity1');
+            newEquatedQuantity.textContent = equatedQuantity;
+            newOrderDetails.appendChild(newEquatedQuantity);
+
+            var newEquatedSelling = newXmlDoc.createElement('EquatedSellingPrice1');
+            newEquatedSelling.textContent = equatedSelling;
+            newOrderDetails.appendChild(newEquatedSelling);
+
+            var newEquatedBuying = newXmlDoc.createElement('EquatedBuyingPrice1');
+            newEquatedBuying.textContent = equatedBuying;
+            newOrderDetails.appendChild(newEquatedBuying);
+
+            var newTax = newXmlDoc.createElement('TaxRate');
+            newTax.textContent = tax;
+            newOrderDetails.appendChild(newTax);
+
+            var newCommission = newXmlDoc.createElement('CommissionOfRepresent');
+            newCommission.textContent = commission;
+            newOrderDetails.appendChild(newCommission);
+
+            var newGoods = newXmlDoc.createElement('GoodsGroup');
+            newGoods.textContent = goodsGroup;
+            newOrderDetails.appendChild(newGoods);
+
+            var newDeliveryDate = newXmlDoc.createElement('DateOfDelivery');
+            newDeliveryDate.textContent = deliveryDate;
+            newOrderDetails.appendChild(newDeliveryDate);
+
+            var newDiscountable = newXmlDoc.createElement('Discountable');
+            newDiscountable.textContent = discountable;
+            newOrderDetails.appendChild(newDiscountable);
+
+            var newArticleImage = newXmlDoc.createElement('ArticleImageLink');
+            newArticleImage.textContent = articleImage;
+            newOrderDetails.appendChild(newArticleImage);
+
+
+            function createElement(doc, tagName, textContent) {
+                var element = doc.createElement(tagName);
+                element.textContent = textContent;
+                return element;
+            }
+
+            var serializer = new XMLSerializer();
+            var newXmlString = serializer.serializeToString(newXmlDoc);
+
+            var blob = new Blob([newXmlString], { type: 'text/xml' });
+
+            var url = URL.createObjectURL(blob);
+
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'transformed_data.xml.wex';
+
+            document.body.appendChild(a);
+            a.click();
+
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+        }
+    </script>
+</body>
+</html>
